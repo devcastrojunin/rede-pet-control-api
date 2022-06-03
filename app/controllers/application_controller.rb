@@ -1,28 +1,39 @@
 class ApplicationController < ActionController::API
+  before_action :authorized
+
   SECRET = "PetC0ntr0l@2022"
 
-  def authentication
-    decode_data = decode_user_data(request.headers["token"])
-    user_data = decode_data[0]["user_id"] unless !decode_data
-    byebug
-    user = User.find(user_data&.id)
+  def encode_token(payload)
+    JWT.encode(payload, SECRET)
+  end
 
-    if user
-      return true
-    else
-      render json: { message: "invalid credentials" }
+  def auth_header
+    request.headers["Authorization"]
+  end
+
+  def decoded_token
+    if auth_header
+      token = auth_header.split(" ")[1]
+      begin
+        JWT.decode(token, SECRET, true, algorithm: "HS256")
+      rescue JWT::DecodeError
+        nil
+      end
     end
   end
 
-  def encode_user_data(payload)
-    JWT.encode payload, SECRET, "HS256"
+  def logged_in_user
+    if decoded_token
+      user_id = decoded_token[0]["user_id"]
+      @user = User.find_by(id: user_id)
+    end
   end
 
-  def decode_user_data(token)
-    begin
-      JWT.decode token, SECRET, true, { algorithm: "HS256" }
-    rescue => e
-      puts e
-    end
+  def logged_in?
+    !!logged_in_user
+  end
+
+  def authorized
+    render json: { message: "Please log in" }, status: :unauthorized unless logged_in?
   end
 end

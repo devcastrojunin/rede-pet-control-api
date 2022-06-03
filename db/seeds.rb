@@ -3,11 +3,18 @@
 #
 # Examples:
 #
-Role.destroy_all
-Role.create(
-  [
-    { name: "SUPER_ADMIN" },
-    { name: "ADMIN" },
-    { name: "EMPLOYEES" },
-  ]
-)
+# Role.destroy_all
+# Role.create(
+#   [
+#     { name: "SUPER_ADMIN" },
+#     { name: "ADMIN" },
+#     { name: "EMPLOYEES" },
+#   ]
+# )
+
+User.create({
+  name: "Usuário admin initial",
+  username: "alex.fort",
+  password: "admin@123",
+  role_id: 1,
+})
