@@ -10,10 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_02_220558) do
+ActiveRecord::Schema.define(version: 2022_06_03_110912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.bigint "cliente_id", null: false
+    t.string "rua"
+    t.string "numero"
+    t.string "bairro"
+    t.string "cidade"
+    t.string "estado"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cliente_id"], name: "index_addresses_on_cliente_id"
+  end
+
+  create_table "clientes", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "phone"
+    t.string "cpf"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "pets", force: :cascade do |t|
+    t.bigint "cliente_id", null: false
+    t.string "name"
+    t.string "category"
+    t.string "color"
+    t.integer "age"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cliente_id"], name: "index_pets_on_cliente_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
@@ -21,4 +53,17 @@ ActiveRecord::Schema.define(version: 2022_06_02_220558) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.string "name"
+    t.string "username"
+    t.string "password"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_users_on_role_id"
+  end
+
+  add_foreign_key "addresses", "clientes"
+  add_foreign_key "pets", "clientes"
+  add_foreign_key "users", "roles"
 end
