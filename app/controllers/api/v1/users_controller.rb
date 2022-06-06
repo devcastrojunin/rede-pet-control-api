@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authorized, only: [:auto_login]
   before_action :set_user, only: [:show, :update, :destroy]
+  before_action :authorized, only: [:auto_login]
 
   # GET /users
   def index
@@ -17,7 +17,8 @@ class Api::V1::UsersController < ApplicationController
   # POST /users
   def create
     @user = User.create(user_params)
-    if @user.valid?
+    # byebug
+    if @user.save
       token = encode_token({ user_id: @user.id })
       render json: { user: @user, token: token }
     else
@@ -45,7 +46,10 @@ class Api::V1::UsersController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
-      render json: { user: @user, token: token }
+      byebug
+      # render json: { user: @user, token: token }
+
+      render json: { user: @user, token: token }, :except => [:password_digest]
     else
       render json: { error: "Invalid username or password" }
     end
@@ -64,6 +68,6 @@ class Api::V1::UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:role_id, :name, :username, :password)
+    params.permit(:username, :password, :role_id, :name)
   end
 end
