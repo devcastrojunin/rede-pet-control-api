@@ -46,7 +46,7 @@ class Api::V1::UsersController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
-      byebug
+      # byebug
       # render json: { user: @user, token: token }
 
       render json: { user: @user, token: token }, :except => [:password_digest]
