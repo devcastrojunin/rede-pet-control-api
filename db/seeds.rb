@@ -3,14 +3,15 @@
 #
 # Examples:
 #
-# Role.destroy_all
-# Role.create(
-#   [
-#     { name: "SUPER_ADMIN" },
-#     { name: "ADMIN" },
-#     { name: "EMPLOYEES" },
-#   ]
-# )
+Role.destroy_all
+User.destroy_all
+Role.create(
+  [
+    { name: "SUPER_ADMIN" },
+    { name: "ADMIN" },
+    { name: "EMPLOYEES" },
+  ]
+)
 
 User.create({
   name: "Usuário admin initial",
