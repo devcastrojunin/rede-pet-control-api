@@ -6,12 +6,12 @@ class Api::V1::UsersController < ApplicationController
   def index
     @users = User.all
 
-    render json: @users
+    render json: @users, :except => [:password_digest]
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, :except => [:password_digest]
   end
 
   # POST /users
@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApplicationController
       token = encode_token({ user_id: @user.id })
       render json: { user: @user, token: token }
     else
-      render json: { error: "Invalid username or password" }
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
@@ -46,12 +46,10 @@ class Api::V1::UsersController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
-      # byebug
-      # render json: { user: @user, token: token }
 
       render json: { user: @user, token: token }, :except => [:password_digest]
     else
-      render json: { error: "Invalid username or password" }
+      render json: { error: "Usuário ou senha inválidos" }
     end
   end
 
