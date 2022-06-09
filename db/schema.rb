@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_03_110912) do
+ActiveRecord::Schema.define(version: 2022_06_09_182255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.bigint "cliente_id", null: false
     t.string "rua"
     t.string "numero"
     t.string "bairro"
@@ -24,7 +23,6 @@ ActiveRecord::Schema.define(version: 2022_06_03_110912) do
     t.string "estado"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cliente_id"], name: "index_addresses_on_cliente_id"
   end
 
   create_table "clientes", force: :cascade do |t|
@@ -34,6 +32,13 @@ ActiveRecord::Schema.define(version: 2022_06_03_110912) do
     t.string "cpf"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "rua"
+    t.string "bairro"
+    t.string "cep"
+    t.string "cidade"
+    t.string "complemento"
+    t.string "estado"
+    t.string "numero"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -63,7 +68,6 @@ ActiveRecord::Schema.define(version: 2022_06_03_110912) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  add_foreign_key "addresses", "clientes"
   add_foreign_key "pets", "clientes"
   add_foreign_key "users", "roles"
 end
