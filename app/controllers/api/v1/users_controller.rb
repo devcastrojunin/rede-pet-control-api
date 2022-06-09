@@ -47,7 +47,7 @@ class Api::V1::UsersController < ApplicationController
 
       render json: { user: @user, token: token }, :except => [:password_digest]
     else
-      render json: { error: "Usuário ou senha inválidos" }, status: :unprocessable_entity
+      render json: { error: "Usuário ou senha inválidos" }, status: :unauthorized
     end
   end
 
