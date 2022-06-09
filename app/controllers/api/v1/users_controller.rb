@@ -5,7 +5,6 @@ class Api::V1::UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-
     render json: @users
   end
 
@@ -17,7 +16,6 @@ class Api::V1::UsersController < ApplicationController
   # POST /users
   def create
     @user = User.create(user_params)
-    # byebug
     if @user.save
       token = encode_token({ user_id: @user.id })
       render json: { user: @user, token: token }
@@ -49,7 +47,7 @@ class Api::V1::UsersController < ApplicationController
 
       render json: { user: @user, token: token }, :except => [:password_digest]
     else
-      render json: { error: "Usuário ou senha inválidos" }
+      render json: { error: "Usuário ou senha inválidos" }, status: :unprocessable_entity
     end
   end
 
