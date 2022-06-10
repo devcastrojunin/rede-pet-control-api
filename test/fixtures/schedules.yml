@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyString
+  date: MyString
+  hour: MyString
+  doctor: one
+  pet: one
+
+two:
+  title: MyString
+  description: MyString
+  date: MyString
+  hour: MyString
+  doctor: two
+  pet: two
