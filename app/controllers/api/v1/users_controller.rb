@@ -15,6 +15,10 @@ class Api::V1::UsersController < ApplicationController
 
   # POST /users
   def create
+    if !params[:password]
+      raise StandardError.new "Passowrd é obrigatório"
+    end
+
     @user = User.create(user_params)
     if @user.save
       token = encode_token({ user_id: @user.id })
