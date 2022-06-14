@@ -15,16 +15,12 @@ class Api::V1::UsersController < ApplicationController
 
   # POST /users
   def create
-    if !params[:password]
-      render json: { password: ["obrigatório"] }, status: :unprocessable_entity
+    @user = User.create(user_params)
+    if @user.save
+      token = encode_token({ user_id: @user.id })
+      render json: { user: @user, token: token }, :except => [:password_digest]
     else
-      @user = User.create(user_params)
-      if @user.save
-        token = encode_token({ user_id: @user.id })
-        render json: { user: @user, token: token }, :except => [:password_digest]
-      else
-        render json: @user.errors, status: :unprocessable_entity
-      end
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 
